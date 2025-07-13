@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+openbb
+pandas
+transformers
+jinja2
+plotly
+torch
+streamlit

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MCI Dashboard</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body { font-family: sans-serif; }
+        #controls { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h1>MCI Fallback Dashboard</h1>
+    <div id="controls">
+        <label for="tickers">Tickers (comma-separated):</label>
+        <input type="text" id="tickers" value="BEF.SG,AUR.AX">
+        <button onclick="fetchData()">Get Data</button>
+    </div>
+    <div id="chart"></div>
+
+    <script>
+        function fetchData() {
+            const tickers = document.getElementById('tickers').value;
+            const url = `/dashboard/competitive/${tickers}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const chartData = JSON.parse(data.chart);
+                    Plotly.newPlot('chart', chartData.data, chartData.layout);
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    document.getElementById('chart').innerHTML = 'Error loading chart.';
+                });
+        }
+        // Initial load
+        fetchData();
+    </script>
+</body>
+</html>

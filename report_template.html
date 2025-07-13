@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Competitive Analysis Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1, h2 { color: #333; }
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>Competitive Analysis Report</h1>
+
+    <h2>Benchmark Summary</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Ticker</th>
+                <th>Average Price</th>
+                <th>Volatility</th>
+                <th>Price Change (%)</th>
+                <th>Average Volume</th>
+                <th>Sharpe Ratio</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ticker, kpis in benchmark.items() %}
+            <tr>
+                <td>{{ ticker }}</td>
+                <td>{{ "%.2f"|format(kpis.average_price) }}</td>
+                <td>{{ "%.2f"|format(kpis.volatility) }}</td>
+                <td>{{ "%.2f"|format(kpis.price_change_percentage) }}</td>
+                <td>{{ "%.2f"|format(kpis.average_volume) }}</td>
+                <td>{{ "%.2f"|format(kpis.sharpe_ratio) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% for ticker, details in data.items() %}
+    <h2>Analysis for {{ ticker }}</h2>
+
+    <h3>Key Performance Indicators</h3>
+    <table>
+        <tr><th>Metric</th><th>Value</th></tr>
+        <tr><td>Average Price</td><td>{{ "%.2f"|format(details.kpis.average_price) }}</td></tr>
+        <tr><td>Volatility</td><td>{{ "%.2f"|format(details.kpis.volatility) }}</td></tr>
+        <tr><td>Price Change (%)</td><td>{{ "%.2f"|format(details.kpis.price_change_percentage) }}</td></tr>
+        <tr><td>Average Volume</td><td>{{ "%.2f"|format(details.kpis.average_volume) }}</td></tr>
+        <tr><td>Sharpe Ratio</td><td>{{ "%.2f"|format(details.kpis.sharpe_ratio) }}</td></tr>
+    </table>
+
+    <h3>Sentiment Analysis</h3>
+    <h4>News Sentiment</h4>
+    <table>
+        <thead>
+            <tr><th>Sentiment</th><th>Score</th></tr>
+        </thead>
+        <tbody>
+            {% for s in details.sentiment.news %}
+            <tr>
+                <td>{{ s.label }}</td>
+                <td>{{ "%.2f"|format(s.score) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h4>X Posts (Simulated) Sentiment</h4>
+    <table>
+        <thead>
+            <tr><th>Sentiment</th><th>Score</th></tr>
+        </thead>
+        <tbody>
+            {% for s in details.sentiment.x_posts %}
+            <tr>
+                <td>{{ s.label }}</td>
+                <td>{{ "%.2f"|format(s.score) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endfor %}
+</body>
+</html>
